@@ -1,8 +1,9 @@
 import { DatabasePoolType, sql } from "slonik";
 import { Game } from "./Game";
+import { GameProvider } from "./GameProvider";
 import { PostgresConnectionPoolSingleton } from "./PostgresConnectionPoolSingleton";
 
-export class GameProviderPostgres {
+export class GameProviderPostgres implements GameProvider {
   private db: DatabasePoolType;
   public constructor() {
     this.db = new PostgresConnectionPoolSingleton().getInstance();

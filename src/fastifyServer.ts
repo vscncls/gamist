@@ -6,4 +6,6 @@ const server = fastify({
   logger,
 });
 
+// server.post("/singup", (req, res) => {});
+
 export { server as fastifyServer };
