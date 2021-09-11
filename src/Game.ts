@@ -1,8 +1,10 @@
 export class Game {
   private name_: string;
   private coverUrl_: string | null;
+  private _id: string;
 
-  constructor(name: string, coverUrl: string | null) {
+  constructor(id: string, name: string, coverUrl: string | null) {
+    this._id = id;
     this.name_ = name;
     this.coverUrl_ = coverUrl;
   }
@@ -13,5 +15,9 @@ export class Game {
 
   public coverUrl(): string | null {
     return this.coverUrl_;
+  }
+
+  public id(): string {
+    return this._id;
   }
 }

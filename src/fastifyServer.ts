@@ -5,6 +5,8 @@ import { UserProviderPostgres } from "./UserProviderPostgres";
 import dotenv from "dotenv";
 import { GetUserSessionTokenQuery } from "./GetUserSessionTokenQuery";
 import { SessionTokenProviderPostgres } from "./SessionTokenProviderPostgres";
+import { GetGameByIdQuery } from "./GetGameByIdQuery";
+import { GameProviderPostgres } from "./GameProviderPostgres";
 
 dotenv.config();
 
@@ -26,6 +28,12 @@ type SinginRequest = {
   Body: {
     email: string;
     password: string;
+  };
+};
+
+type GetGameByIdRequest = {
+  Params: {
+    id: string;
   };
 };
 
@@ -52,9 +60,12 @@ server.addSchema({
 });
 
 const userProvider = new UserProviderPostgres();
+const gameProvider = new GameProviderPostgres();
 const sessionTokenProvider = new SessionTokenProviderPostgres();
+
 const registerUserCommand = new RegisterUserCommand(userProvider);
 const getSessionTokenQuery = new GetUserSessionTokenQuery(userProvider, sessionTokenProvider);
+const getGameByIdQuery = new GetGameByIdQuery(gameProvider);
 
 server.post<SingupRequest>("/singup", { schema: { body: { $ref: "singup" } } }, async (req, res) => {
   await registerUserCommand.execute(req.body);
@@ -64,6 +75,11 @@ server.post<SingupRequest>("/singup", { schema: { body: { $ref: "singup" } } }, 
 server.post<SinginRequest>("/singin", { schema: { body: { $ref: "singin" } } }, async (req, res) => {
   const sessionToken = await getSessionTokenQuery.execute(req.body);
   res.code(200).send({ sessionToken: sessionToken.asString() });
+});
+
+server.get<GetGameByIdRequest>("/game/:id", async (req, res) => {
+  const game = await getGameByIdQuery.execute(req.params.id);
+  res.code(200).send({ id: game.id(), name: game.name(), coverUrl: game.coverUrl() });
 });
 
 export { server as fastifyServer };

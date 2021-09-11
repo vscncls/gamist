@@ -3,6 +3,12 @@ import { Game } from "./Game";
 import { GameProvider } from "./GameProvider";
 import { PostgresConnectionPoolSingleton } from "./PostgresConnectionPoolSingleton";
 
+type gameDb = {
+  id: string;
+  name: string;
+  cover_url: string;
+};
+
 export class GameProviderPostgres implements GameProvider {
   private db: DatabasePoolType;
   public constructor() {
@@ -11,11 +17,21 @@ export class GameProviderPostgres implements GameProvider {
 
   public async saveBatch(games: Game[]): Promise<void> {
     await this.db.query(sql`
-      INSERT INTO games("name", "cover_url")
+      INSERT INTO games("id", "name", "cover_url")
       SELECT * FROM ${sql.unnest(
-        games.map((game) => [game.name(), game.coverUrl()]),
-        ["text", "text"]
+        games.map((game) => [game.id(), game.name(), game.coverUrl()]),
+        ["uuid", "text", "text"]
       )}
     `);
+  }
+
+  public async getById(id: string): Promise<Game | null> {
+    const result = await this.db.maybeOne<gameDb>(sql`
+      SELECT *
+      FROM games
+      WHERE id = ${id}
+    `);
+
+    return result ? new Game(result.id, result.name, result.cover_url) : null;
   }
 }

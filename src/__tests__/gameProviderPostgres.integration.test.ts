@@ -11,11 +11,28 @@ describe("Game Provider - Postgres", () => {
 
   it("saves games", async () => {
     const gameProvider = new GameProviderPostgres();
-    const games = [new Game("game 1", "https://cover/url"), new Game("game 2", "https://cover/url")];
+    const games = [
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url"),
+      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url"),
+    ];
 
     await gameProvider.saveBatch(games);
 
     const result = await db.query(sql`SELECT * FROM games`);
     expect(result.rows.length).toEqual(2);
+  });
+
+  it("fetches games by id", async () => {
+    const gameProvider = new GameProviderPostgres();
+    const games = [
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url"),
+      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url"),
+    ];
+    await gameProvider.saveBatch(games);
+
+    const game = await gameProvider.getById("b350bbe9-503b-46fb-8e5a-fcd4bdbab258");
+
+    expect(game).not.toBeFalsy();
+    expect(game!.id()).toBe("b350bbe9-503b-46fb-8e5a-fcd4bdbab258");
   });
 });

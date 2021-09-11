@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { Game } from "./Game";
+import { v4 as uuidv4 } from "uuid";
 
 type IgdbApiCredentials = {
   client_id: string;
@@ -73,6 +74,6 @@ export class IgdbApiClient {
       }
     );
 
-    return response.data.map((game) => new Game(game.name, game.cover ? `https:${game.cover.url}` : null));
+    return response.data.map((game) => new Game(uuidv4(), game.name, game.cover ? `https:${game.cover.url}` : null));
   }
 }
