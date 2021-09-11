@@ -2,8 +2,16 @@ import { User } from "./User";
 import { UserDTO } from "./UserDTO";
 import { UserProvider } from "./UserProvider";
 
-export class EmailAlreadyExists extends Error {}
-export class UsernameAlreadyExists extends Error {}
+export class EmailAlreadyExists extends Error {
+  constructor() {
+    super("Email already exists");
+  }
+}
+export class UsernameAlreadyExists extends Error {
+  constructor() {
+    super("Username already exists");
+  }
+}
 
 export class RegisterUserCommand {
   private userProvider: UserProvider;
