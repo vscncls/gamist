@@ -1,22 +1,6 @@
 import { Game } from "../Game";
-import { GameProvider } from "../GameProvider";
 import { GetGameByIdQuery } from "../GetGameByIdQuery";
-
-class FakeGameProvider implements GameProvider {
-  private games: Game[];
-  constructor() {
-    this.games = [];
-  }
-
-  saveBatch(games: Game[]) {
-    this.games.push(...games);
-    return Promise.resolve();
-  }
-
-  getById(id: string): Promise<Game | null> {
-    return Promise.resolve(this.games.find((game) => game.id() === id) || null);
-  }
-}
+import { FakeGameProvider } from "./FakeGameProvider";
 
 describe("Fetch game by it's id", () => {
   it("works on a existing id", async () => {

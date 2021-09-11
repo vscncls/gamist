@@ -82,4 +82,9 @@ server.get<GetGameByIdRequest>("/game/:id", async (req, res) => {
   res.code(200).send({ id: game.id(), name: game.name(), coverUrl: game.coverUrl() });
 });
 
+server.get<GetGameByIdRequest>("/games", async (_, res) => {
+  const games = await gameProvider.getAll();
+  res.code(200).send({ games: games.map((game) => ({ id: game.id(), name: game.name(), coverUrl: game.coverUrl() })) });
+});
+
 export { server as fastifyServer };

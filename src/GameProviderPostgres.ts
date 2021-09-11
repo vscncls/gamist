@@ -34,4 +34,13 @@ export class GameProviderPostgres implements GameProvider {
 
     return result ? new Game(result.id, result.name, result.cover_url) : null;
   }
+
+  public async getAll(): Promise<Game[]> {
+    const result = await this.db.query<gameDb>(sql`
+      SELECT *
+      FROM games
+    `);
+
+    return result.rows.map((gameDb) => new Game(gameDb.id, gameDb.name, gameDb.cover_url));
+  }
 }
