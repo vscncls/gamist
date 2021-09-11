@@ -13,7 +13,7 @@ export class RegisterUserCommand {
   }
 
   public async execute(userDTO: UserDTO): Promise<void> {
-    const user = new User(userDTO.id, userDTO.email, userDTO.username);
+    const user = await User.ofPlainTextPassword(userDTO.id, userDTO.email, userDTO.username, userDTO.password);
     const existentUser = await this.userProvider.getByEmailOrUsername(userDTO.email, userDTO.username);
     if (existentUser) {
       if (userDTO.username === existentUser.username()) {
@@ -24,6 +24,6 @@ export class RegisterUserCommand {
       }
     }
 
-    this.userProvider.createNewUser(user);
+    await this.userProvider.createNewUser(user);
   }
 }

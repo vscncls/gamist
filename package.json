@@ -6,7 +6,7 @@
   "scripts": {
     "test:unit": "jest -c ./jest.unit.config.js",
     "test:integration": "node migrate down --to 0 && node migrate up && jest -c ./jest.integration.config.js",
-    "test:e2e": "jest -c ./jest.e2e.config.js",
+    "test:e2e": "node migrate down --to 0 && node migrate up && jest -c ./jest.e2e.config.js",
     "lint": "eslint src/ && prettier -c src/",
     "server:dev": "ts-node-dev --respawn src/entrypoints/restApi.ts | ./node_modules/.bin/pino-pretty",
     "server:run": "node ./dist/src/entrypoints/restApi.js"
@@ -23,15 +23,19 @@
   "homepage": "https://github.com/vscncls/typescript-backend-template#readme",
   "dependencies": {
     "axios": "^0.21.4",
+    "bcrypt": "^5.0.1",
     "dotenv": "^10.0.0",
     "fastify": "^3.21.0",
-    "slonik": "^24.1.0"
+    "slonik": "^24.1.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@slonik/migrator": "^0.8.5",
+    "@types/bcrypt": "^5.0.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.9.1",
     "@types/pino": "^6.3.11",
+    "@types/uuid": "^8.3.1",
     "@typescript-eslint/eslint-plugin": "^4.31.0",
     "@typescript-eslint/parser": "^4.31.0",
     "eslint": "^7.32.0",

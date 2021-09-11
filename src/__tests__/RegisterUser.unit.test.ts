@@ -1,32 +1,5 @@
 import { RegisterUserCommand } from "../RegisterUserCommand";
-import { User } from "../User";
-import { UserProvider } from "../UserProvider";
-
-class FakeUserProvider implements UserProvider {
-  private users: Map<string, User>;
-  constructor() {
-    this.users = new Map();
-  }
-
-  createNewUser(user: User) {
-    this.users.set(user.id(), user);
-    return Promise.resolve();
-  }
-
-  getById(userId: string) {
-    return Promise.resolve(this.users.get(userId) || null);
-  }
-
-  async getByEmailOrUsername(email: string, username: string) {
-    for (const user of this.users.values()) {
-      if (user.email() === email || user.username() === username) {
-        return user;
-      }
-    }
-
-    return null;
-  }
-}
+import { FakeUserProvider } from "./FakeUserProvider";
 
 describe("Register user", () => {
   it("saves user", async () => {
@@ -38,6 +11,7 @@ describe("Register user", () => {
       id: userId,
       email: "lucas@vscncls.xyz",
       username: "vscncls",
+      password: "teste",
     });
 
     const user = await userProvider.getById(userId);
@@ -53,13 +27,16 @@ describe("Register user", () => {
       id: "f8a3e94f-4e2e-4ff7-aaa0-8045814d8231",
       email: "lucas@vscncls.xyz",
       username: "vscncls1",
+      password: "teste",
     });
 
+    // TODO: assert especific error
     await expect(
       command.execute({
         id: "e6884def-1ee6-4581-a471-428da2afd670",
         email: "lucas@vscncls.xyz",
         username: "vscncls2",
+        password: "teste",
       })
     ).rejects.toThrow();
   });
