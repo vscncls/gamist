@@ -29,7 +29,7 @@ export const Games = () => {
       margin="40px"
     >
       {games.map((game) => (
-        <Game {...game} />
+        <Game key={game.id} {...game} />
       ))}
     </Flex>
   );
