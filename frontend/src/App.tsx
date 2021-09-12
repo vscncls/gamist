@@ -29,7 +29,7 @@ export const App = () => (
         <Route path="/game/:id">
           {(props) => <Game id={props.location!.pathname.split("/")[2]} />}
         </Route>
-        <Redirect from="/" to="/singup" />
+        <Redirect from="/" to="/signup" />
       </Switch>
     </Box>
   </Router>
