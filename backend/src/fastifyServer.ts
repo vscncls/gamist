@@ -1,8 +1,9 @@
+import dotenv from "dotenv";
 import fastify from "fastify";
+import fastifyCors from "fastify-cors";
 import { LoggerSingleton } from "./LoggerSingleton";
 import { RegisterUserCommand } from "./RegisterUserCommand";
 import { UserProviderPostgres } from "./UserProviderPostgres";
-import dotenv from "dotenv";
 import { GetUserSessionTokenQuery } from "./GetUserSessionTokenQuery";
 import { SessionTokenProviderPostgres } from "./SessionTokenProviderPostgres";
 import { GetGameByIdQuery } from "./GetGameByIdQuery";
@@ -15,6 +16,9 @@ dotenv.config();
 const logger = new LoggerSingleton().getInstance();
 const server = fastify({
   logger,
+});
+server.register(fastifyCors, {
+  origin: true,
 });
 
 type SingupRequest = {

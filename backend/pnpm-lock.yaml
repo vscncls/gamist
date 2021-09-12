@@ -17,6 +17,7 @@ specifiers:
   eslint-config-prettier: ^8.3.0
   eslint-plugin-prettier: ^4.0.0
   fastify: ^3.21.0
+  fastify-cors: ^6.0.2
   jest: ^27.1.1
   pino-pretty: ^7.0.0
   prettier: ^2.4.0
@@ -32,6 +33,7 @@ dependencies:
   bcrypt: 5.0.1
   dotenv: 10.0.0
   fastify: 3.21.0
+  fastify-cors: 6.0.2
   slonik: 24.1.0
   uuid: 8.3.2
 
@@ -1985,8 +1987,19 @@ packages:
   /fast-safe-stringify/2.1.1:
     resolution: {integrity: sha512-W+KJc2dmILlPplD/H4K9l9LcAHAfPtP6BY84uVLXQ6Evcz9Lcg33Y2z1IVblT6xdY54PXYVHEv+0Wpq8Io6zkA==}
 
+  /fastify-cors/6.0.2:
+    resolution: {integrity: sha512-sE0AOyzmj5hLLRRVgenjA6G2iOGX35/1S3QGYB9rr9TXelMZB3lFrXy4CzwYVOMiujJeMiLgO4J7eRm8sQSv8Q==}
+    dependencies:
+      fastify-plugin: 3.0.0
+      vary: 1.1.2
+    dev: false
+
   /fastify-error/0.3.1:
     resolution: {integrity: sha512-oCfpcsDndgnDVgiI7bwFKAun2dO+4h84vBlkWsWnz/OUK9Reff5UFoFl241xTiLeHWX/vU9zkDVXqYUxjOwHcQ==}
+    dev: false
+
+  /fastify-plugin/3.0.0:
+    resolution: {integrity: sha512-ZdCvKEEd92DNLps5n0v231Bha8bkz1DjnPP/aEz37rz/q42Z5JVLmgnqR4DYuNn3NXAO3IDCPyRvgvxtJ4Ym4w==}
     dev: false
 
   /fastify-warning/0.2.0:
@@ -4384,6 +4397,11 @@ packages:
       convert-source-map: 1.8.0
       source-map: 0.7.3
     dev: true
+
+  /vary/1.1.2:
+    resolution: {integrity: sha1-IpnwLG3tMNSllhsLn3RSShj2NPw=}
+    engines: {node: '>= 0.8'}
+    dev: false
 
   /verror/1.10.0:
     resolution: {integrity: sha1-OhBcoXBTr1XW4nDB+CiGguGNpAA=}
