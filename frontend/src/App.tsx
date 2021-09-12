@@ -15,7 +15,7 @@ import { Game } from "./pages/Game";
 export const App = () => (
   <Router>
     <Box textAlign="center" fontSize="xl">
-      <ColorModeSwitcher justifySelf="flex-end" />
+      <ColorModeSwitcher />
       <Switch>
         <Route path="/singup">
           <Singup />

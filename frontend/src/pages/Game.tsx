@@ -1,7 +1,13 @@
 import * as React from "react";
 import axios from "axios";
-import { Text } from "@chakra-ui/react";
-import { FaTruckLoading } from "react-icons/fa";
+import {
+  Text,
+  Button,
+  Center,
+  Image,
+  Grid,
+  GridItem,
+} from "@chakra-ui/react";
 
 type GameResponse = { id: string; name: string; coverUrl: string };
 
@@ -16,13 +22,30 @@ export const Game: React.FC<{ id: string }> = ({ id }) => {
     (async () => {
       setGame(await fetchGame(id));
     })();
-  }, []);
+  }, [id]);
 
   if (!game) {
-    return <FaTruckLoading />;
+    return (
+      <Center height="100vh">
+        <Button isLoading={true} variant="outline" />
+      </Center>
+    );
   }
 
   console.log(game);
 
-  return <Text>{game?.name}</Text>;
+  return (
+    <Grid height="100vh" margin="5vw" templateColumns="200px auto" gap="40px">
+      <GridItem>
+        <Image
+          fallbackSrc="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.rossendaleplayers.org.uk%2FPublic%2Fimages%2Fimagenotfound.jpg&f=1&nofb=1"
+          src={game.coverUrl}
+          boxSize="200px"
+        />
+      </GridItem>
+      <GridItem>
+        <Text paddingTop="30px" float="left">{game?.name}</Text>
+      </GridItem>
+    </Grid>
+  );
 };
