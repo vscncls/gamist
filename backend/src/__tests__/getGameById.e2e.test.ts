@@ -27,4 +27,6 @@ describe("/game/:id", () => {
     expect(response.statusCode).toEqual(200);
     expect(body.id).toEqual("b350bbe9-503b-46fb-8e5a-fcd4bdbab258");
   });
+
+  //TODO: add test for logged in user, it should return the playing status
 });
