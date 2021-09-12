@@ -7,8 +7,8 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import { Singup } from "./pages/Singup";
-import { Singin } from "./pages/Singin";
+import { Singup as Signup } from "./pages/Singup";
+import { Singin as Signin } from "./pages/Singin";
 import { Games } from "./pages/Games";
 import { Game } from "./pages/Game";
 
@@ -17,11 +17,11 @@ export const App = () => (
     <Box textAlign="center" fontSize="xl">
       <ColorModeSwitcher />
       <Switch>
-        <Route path="/singup">
-          <Singup />
+        <Route path="/signup">
+          <Signup />
         </Route>
-        <Route path="/singin">
-          <Singin />
+        <Route path="/signin">
+          <Signin />
         </Route>
         <Route path="/games">
           <Games />
