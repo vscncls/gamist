@@ -1,18 +1,18 @@
 export class Game {
-  private name_: string;
+  private _name: string;
   private _coverUrl: string | null;
   private _id: string;
   private _summary: string | null;
 
   constructor(id: string, name: string, coverUrl: string | null, summary: string | null) {
     this._id = id;
-    this.name_ = name;
+    this._name = name;
     this._coverUrl = coverUrl;
     this._summary = summary;
   }
 
   public name(): string {
-    return this.name_;
+    return this._name;
   }
 
   public coverUrl(): string | null {
