@@ -5,8 +5,8 @@ import { PostgresConnectionPoolSingleton } from "../PostgresConnectionPoolSingle
 
 describe("Game Provider - Postgres", () => {
   const db = new PostgresConnectionPoolSingleton().getInstance();
-  afterEach(() => {
-    db.query(sql`DELETE FROM games;`);
+  afterEach(async () => {
+    await db.query(sql`DELETE FROM games;`);
   });
 
   it("saves games", async () => {

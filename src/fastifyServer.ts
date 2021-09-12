@@ -7,6 +7,8 @@ import { GetUserSessionTokenQuery } from "./GetUserSessionTokenQuery";
 import { SessionTokenProviderPostgres } from "./SessionTokenProviderPostgres";
 import { GetGameByIdQuery } from "./GetGameByIdQuery";
 import { GameProviderPostgres } from "./GameProviderPostgres";
+import { GameListProviderPostgres } from "./GameListProviderPostgres";
+import { GamePlayedStatus } from "./GamePlayedStatus";
 
 dotenv.config();
 
@@ -37,6 +39,18 @@ type GetGameByIdRequest = {
   };
 };
 
+type SetGameStatus = {
+  Headers: {
+    authorization: string;
+  };
+  Body: {
+    status: string;
+  };
+  Params: {
+    gameId: string;
+  };
+};
+
 server.addSchema({
   $id: "singup",
   type: "object",
@@ -59,9 +73,19 @@ server.addSchema({
   required: ["email", "password"],
 });
 
+server.addSchema({
+  $id: "addGameToList",
+  type: "object",
+  properties: {
+    status: { type: "string", pattern: "^(PLANNING|PLAYING|COMPLETED)$" },
+  },
+  required: ["status"],
+});
+
 const userProvider = new UserProviderPostgres();
 const gameProvider = new GameProviderPostgres();
 const sessionTokenProvider = new SessionTokenProviderPostgres();
+const gameListProvider = new GameListProviderPostgres();
 
 const registerUserCommand = new RegisterUserCommand(userProvider);
 const getSessionTokenQuery = new GetUserSessionTokenQuery(userProvider, sessionTokenProvider);
@@ -85,6 +109,17 @@ server.get<GetGameByIdRequest>("/game/:id", async (req, res) => {
 server.get<GetGameByIdRequest>("/games", async (_, res) => {
   const games = await gameProvider.getAll();
   res.code(200).send({ games: games.map((game) => ({ id: game.id(), name: game.name(), coverUrl: game.coverUrl() })) });
+});
+
+server.put<SetGameStatus>("/game-list/:gameId", { schema: { body: { $ref: "addGameToList" } } }, async (req, res) => {
+  const token = req.headers.authorization.split(" ")[1];
+  const sessionToken = await sessionTokenProvider.fetchTokenByValue(token);
+  if (!sessionToken) {
+    throw new Error("invalid login");
+  }
+  const status = GamePlayedStatus[req.body.status as keyof typeof GamePlayedStatus];
+  await gameListProvider.addPlayingStatus(req.params.gameId, sessionToken.userId(), status);
+  res.code(202).send("");
 });
 
 export { server as fastifyServer };

@@ -1,0 +1,2 @@
+DROP TABLE IF EXISTS game_list;
+DROP TYPE IF EXISTS game_status;
