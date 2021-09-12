@@ -107,7 +107,23 @@ server.post<SinginRequest>("/singin", { schema: { body: { $ref: "singin" } } }, 
 
 server.get<GetGameByIdRequest>("/game/:id", async (req, res) => {
   const game = await getGameByIdQuery.execute(req.params.id);
-  res.code(200).send({ id: game.id(), name: game.name(), coverUrl: game.coverUrl(), summary: game.summary() });
+
+  const token = req.headers.authorization?.split(" ")[1];
+  let status: GamePlayedStatus | null = null;
+  if (token) {
+    const sessionToken = await sessionTokenProvider.fetchTokenByValue(token);
+    if (sessionToken) {
+      status = await gameListProvider.getByGameIdAndUserId(req.params.id, sessionToken.userId());
+    }
+  }
+
+  res.code(200).send({
+    id: game.id(),
+    name: game.name(),
+    coverUrl: game.coverUrl(),
+    summary: game.summary(),
+    watchingStatus: status,
+  });
 });
 
 server.get<GetGameByIdRequest>("/games", async (_, res) => {
