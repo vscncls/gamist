@@ -12,7 +12,9 @@ describe("/game/:id", () => {
 
   it("fetches new game with sucess", async () => {
     const gameProvider = new GameProviderPostgres();
-    await gameProvider.saveBatch([new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url")]);
+    await gameProvider.saveBatch([
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url", "a quick summary"),
+    ]);
     const response = await fastifyServer.inject({
       method: "GET",
       url: "/game/b350bbe9-503b-46fb-8e5a-fcd4bdbab258",

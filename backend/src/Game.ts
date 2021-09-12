@@ -1,12 +1,14 @@
 export class Game {
   private name_: string;
-  private coverUrl_: string | null;
+  private _coverUrl: string | null;
   private _id: string;
+  private _summary: string | null;
 
-  constructor(id: string, name: string, coverUrl: string | null) {
+  constructor(id: string, name: string, coverUrl: string | null, summary: string | null) {
     this._id = id;
     this.name_ = name;
-    this.coverUrl_ = coverUrl;
+    this._coverUrl = coverUrl;
+    this._summary = summary;
   }
 
   public name(): string {
@@ -14,10 +16,14 @@ export class Game {
   }
 
   public coverUrl(): string | null {
-    return this.coverUrl_;
+    return this._coverUrl;
   }
 
   public id(): string {
     return this._id;
+  }
+
+  public summary(): string | null {
+    return this._summary;
   }
 }

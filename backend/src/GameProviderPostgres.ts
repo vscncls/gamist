@@ -7,6 +7,7 @@ type gameDb = {
   id: string;
   name: string;
   cover_url: string;
+  summary: string;
 };
 
 export class GameProviderPostgres implements GameProvider {
@@ -17,10 +18,10 @@ export class GameProviderPostgres implements GameProvider {
 
   public async saveBatch(games: Game[]): Promise<void> {
     await this.db.query(sql`
-      INSERT INTO games("id", "name", "cover_url")
+      INSERT INTO games("id", "name", "cover_url", "summary")
       SELECT * FROM ${sql.unnest(
-        games.map((game) => [game.id(), game.name(), game.coverUrl()]),
-        ["uuid", "text", "text"]
+        games.map((game) => [game.id(), game.name(), game.coverUrl(), game.summary()]),
+        ["uuid", "text", "text", "text"]
       )}
     `);
   }
@@ -32,7 +33,7 @@ export class GameProviderPostgres implements GameProvider {
       WHERE id = ${id}
     `);
 
-    return result ? new Game(result.id, result.name, result.cover_url) : null;
+    return result ? new Game(result.id, result.name, result.cover_url, result.summary) : null;
   }
 
   public async getAll(): Promise<Game[]> {
@@ -41,6 +42,6 @@ export class GameProviderPostgres implements GameProvider {
       FROM games
     `);
 
-    return result.rows.map((gameDb) => new Game(gameDb.id, gameDb.name, gameDb.cover_url));
+    return result.rows.map((gameDb) => new Game(gameDb.id, gameDb.name, gameDb.cover_url, gameDb.summary));
   }
 }

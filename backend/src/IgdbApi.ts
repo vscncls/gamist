@@ -19,6 +19,7 @@ type GamesResponse = {
     url: string;
   };
   name: string;
+  summary: string;
 };
 
 export class IgdbApiClient {
@@ -65,7 +66,7 @@ export class IgdbApiClient {
     await this.authRefresh();
     const response = await this.axios.post<GamesResponse[]>(
       `${this.baseUrl}/games`,
-      `fields name, id, cover.url; limit ${qty}; offset ${offset}; sort rating desc; where rating_count > 50;`,
+      `fields name, id, cover.url, summary; limit ${qty}; offset ${offset}; sort rating desc; where rating_count > 50;`,
       {
         headers: {
           "Client-ID": this.credentials.client_id,
@@ -74,6 +75,8 @@ export class IgdbApiClient {
       }
     );
 
-    return response.data.map((game) => new Game(uuidv4(), game.name, game.cover ? `https:${game.cover.url}` : null));
+    return response.data.map(
+      (game) => new Game(uuidv4(), game.name, game.cover ? `https:${game.cover.url}` : null, game.summary || null)
+    );
   }
 }

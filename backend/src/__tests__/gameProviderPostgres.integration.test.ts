@@ -12,8 +12,8 @@ describe("Game Provider - Postgres", () => {
   it("saves games", async () => {
     const gameProvider = new GameProviderPostgres();
     const games = [
-      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url"),
-      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url"),
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url", "summary"),
+      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url", "summary"),
     ];
 
     await gameProvider.saveBatch(games);
@@ -25,8 +25,8 @@ describe("Game Provider - Postgres", () => {
   it("fetches games by id", async () => {
     const gameProvider = new GameProviderPostgres();
     const games = [
-      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url"),
-      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url"),
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url", "summary"),
+      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url", "summary"),
     ];
     await gameProvider.saveBatch(games);
 
@@ -39,8 +39,8 @@ describe("Game Provider - Postgres", () => {
   it("fetches all games from db", async () => {
     const gameProvider = new GameProviderPostgres();
     const games = [
-      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url"),
-      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url"),
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url", "summary"),
+      new Game("1733dd82-2e6b-49e3-9155-cc3693af6d98", "game 2", "https://cover/url", "summary"),
     ];
     await gameProvider.saveBatch(games);
 

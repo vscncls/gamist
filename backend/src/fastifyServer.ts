@@ -107,7 +107,7 @@ server.post<SinginRequest>("/singin", { schema: { body: { $ref: "singin" } } }, 
 
 server.get<GetGameByIdRequest>("/game/:id", async (req, res) => {
   const game = await getGameByIdQuery.execute(req.params.id);
-  res.code(200).send({ id: game.id(), name: game.name(), coverUrl: game.coverUrl() });
+  res.code(200).send({ id: game.id(), name: game.name(), coverUrl: game.coverUrl(), summary: game.summary() });
 });
 
 server.get<GetGameByIdRequest>("/games", async (_, res) => {

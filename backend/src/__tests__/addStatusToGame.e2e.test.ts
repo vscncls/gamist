@@ -21,7 +21,9 @@ describe("/game-list/:gameId", () => {
     const gameProvider = new GameProviderPostgres();
     const userProvider = new UserProviderPostgres();
     const sessionTokenProvider = new SessionTokenProviderPostgres();
-    await gameProvider.saveBatch([new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url")]);
+    await gameProvider.saveBatch([
+      new Game("b350bbe9-503b-46fb-8e5a-fcd4bdbab258", "game 1", "https://cover/url", "summary"),
+    ]);
     await userProvider.createNewUser(
       await User.ofPlainTextPassword("247fff9a-4220-4085-bc38-4776debdff68", "lucas@vscncls.xyz", "vscncls", "senha")
     );

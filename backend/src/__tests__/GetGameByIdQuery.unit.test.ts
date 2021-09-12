@@ -5,7 +5,7 @@ import { FakeGameProvider } from "./FakeGameProvider";
 describe("Fetch game by it's id", () => {
   it("works on a existing id", async () => {
     const gameProvider = new FakeGameProvider();
-    gameProvider.saveBatch([new Game("213", "game name", null)]);
+    gameProvider.saveBatch([new Game("213", "game name", null, null)]);
     const getGameById = new GetGameByIdQuery(gameProvider);
 
     const game = await getGameById.execute("213");
