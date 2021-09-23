@@ -2,3 +2,5 @@ node_modules/
 .vim/
 dist/
 .env
+.vagrant/
+.pnpm-debug.log
