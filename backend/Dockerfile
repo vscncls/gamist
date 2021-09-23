@@ -3,21 +3,23 @@ FROM node:14-alpine
 RUN addgroup -S app
 RUN adduser -S app -G app
 
+RUN npm install -g pnpm
+
 WORKDIR /app
 RUN chown -R app:app /app
 COPY --chown=app:app package.json /app
-COPY --chown=app:app package-lock.json /app
+COPY --chown=app:app pnpm-lock.yaml /app
 
 USER app:app
 
-RUN npm ci
+RUN pnpm ci
 
 COPY --chown=app:app . /app
 
-RUN npx tsc
+RUN pnpx tsc
 
-RUN npm prune --production
+RUN pnpm prune --production
 
 EXPOSE 8080/tcp
 
-ENTRYPOINT ["npm", "run", "server:run"]
+ENTRYPOINT ["pnpm", "run", "server:run"]
