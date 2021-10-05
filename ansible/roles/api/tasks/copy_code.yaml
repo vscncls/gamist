@@ -6,14 +6,18 @@
     src: ./backend
     dest: /var/www/backend
     owner: api
+    mode: '755'
 
 - name: Copy frontend
   copy:
     src: ./frontend
     dest: /var/www/frontend
     owner: spa
+    mode: '755'
 
 - name: Copy nginx.conf
   copy:
     src: ./nginx.conf
     dest: /etc/nginx/nginx.conf
+    owner: nginx
+    mode: '755'
