@@ -1,3 +1,6 @@
+- name: Create base folder with read/write permissions
+  shell: mkdir -p /var/www && chmod 777 /var/www
+
 - name: Copy backend
   copy:
     src: ./backend
