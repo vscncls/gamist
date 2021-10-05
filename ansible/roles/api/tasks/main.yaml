@@ -1,0 +1,7 @@
+---
+- include: create_users.yaml
+- include: install_dependencies.yaml
+- include: firewall_rules.yaml
+- include: copy_code.yaml
+- include: compile.yaml
+- include: run.yaml

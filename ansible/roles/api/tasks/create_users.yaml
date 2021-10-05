@@ -1,0 +1,11 @@
+- name: Nginx user
+  user:
+    name: "nginx"
+
+- name: Api user
+  user:
+    name: "api"
+
+- name: SPA user
+  user:
+    name: "spa"

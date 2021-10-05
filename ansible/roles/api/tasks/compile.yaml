@@ -1,0 +1,11 @@
+- name: Compile backend
+  shell: pnpx tsc
+  chdir: /tmp/www/backend
+  become: yes
+  become_user: api
+
+- name: Compile frontend
+  shell: pnpm build
+  chdir: /tmp/www/backend
+  become: yes
+  become_user: spa

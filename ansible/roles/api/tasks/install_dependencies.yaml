@@ -1,0 +1,20 @@
+- name: Install nginx
+  shell: |
+    apt update
+    apt install nginx
+
+- name: Install node
+  shell: |
+    apt update
+    curl -sL https://deb.nodesource.com/setup_14.x | bash -
+    apt -y install nodejs
+    exit 0
+
+- name: Install pnpm
+  shell: npm install -g pnpm
+
+- name: Install dependencies
+  shell: pnpm install
+  become: yes
+  become_user: api
+  chdir: /tmp/www/backend

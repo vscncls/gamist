@@ -1,0 +1,16 @@
+- name: Copy backend
+  copy:
+    src: ./backend
+    dest: /var/www/backend
+    owner: api
+
+- name: Copy frontend
+  copy:
+    src: ./frontend
+    dest: /var/www/frontend
+    owner: spa
+
+- name: Copy nginx.conf
+  copy:
+    src: ./nginx.conf
+    dest: /etc/nginx/nginx.conf
