@@ -26,12 +26,13 @@ Vagrant.configure("2") do |config|
       # backend
       cd /vagrant/backend
       pnpm i
-      pnpm server:dev &
+      node migrate up
+      pnpm run server:dev &
 
       # frontend
       cd /vagrant/frontend
       pnpm i
-      pnpm start &
+      pnpm run start &
 EOF
   SHELL
 end
