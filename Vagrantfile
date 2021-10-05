@@ -5,7 +5,7 @@ Vagrant.configure("2") do |config|
   config.vm.box = "bento/ubuntu-20.10"
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
-  config.vm.synced_folder "backend/", "/vagrant"
+  config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
 
   config.vm.provision "docker" do |docker|
     docker.run "postgres:13.3",
@@ -22,8 +22,16 @@ Vagrant.configure("2") do |config|
       nvm install --lts=fermium
       nvm use --lts=fermium
       npm install -g pnpm
-      cd /vagrant
+
+      # backend
+      cd /vagrant/backend
       pnpm i
+      pnpm server:dev &
+
+      # frontend
+      cd /vagrant/frontend
+      pnpm i
+      pnpm start &
 EOF
   SHELL
 end
