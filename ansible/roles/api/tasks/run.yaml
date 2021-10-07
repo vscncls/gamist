@@ -7,7 +7,6 @@
     state: reloaded
 
 - name: Start api
-  shell: pnpm server:run
+  shell: cd /tmp/www/backend && pnpm server:run
   become: yes
   become_user: api
-  chdir: /tmp/www/backend

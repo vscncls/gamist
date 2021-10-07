@@ -11,10 +11,9 @@
     exit 0
 
 - name: Install pnpm
-  shell: npm install -g pnpm
+  shell: cd /tmp/www/backend && npm install -g pnpm
 
 - name: Install dependencies
   shell: pnpm install
   become: yes
   become_user: api
-  chdir: /tmp/www/backend
