@@ -1,0 +1,11 @@
+- name: Install db
+  hosts: db
+  remote_user: root
+  roles:
+    - db
+
+- name: Install api and frontend
+  hosts: api
+  remote_user: root
+  roles:
+    - api

@@ -1,7 +1,4 @@
 ---
-- name: Db
-  hosts: db
-  tasks:
-    - include: install_dependencies.yaml
-    - include: run.yaml
-    - include: create_db_users.yaml
+- include: install_dependencies.yaml
+- include: run.yaml
+- include: create_db_users.yaml
