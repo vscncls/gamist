@@ -1,6 +1,7 @@
 - name: Ensure user has access to the database
-  sudo_user: postgres
-  postgresql_user:
+  become: yes
+  become_user: postgres
+  community.postgresql.postgresql_user:
     db: db
     name: api
     password: password
@@ -8,8 +9,9 @@
     state: present
 
 - name: Ensure user does not have unnecessary privileges
-  sudo_user: postgres
-  postgresql_user:
+  become: yes
+  become_user: postgres
+  community.postgresql.postgresql_user:
     name: api
     role_attr_flags: NOSUPERUSER,NOCREATEDB
     state: present

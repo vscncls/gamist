@@ -1,6 +1,6 @@
 - name: Ensure bash, OpenSSl, and libssl are the latest versions
   apt:
-    name: {{ item }}
+    name: "{{ item }}"
     update_cache: true
     state: latest
   with_items:
@@ -12,7 +12,7 @@
 
 - name: Install PostgreSQL
   apt:
-    name: {{ item }}
+    name: "{{ item }}"
     update_cache: true
     state: present
   with_items:
