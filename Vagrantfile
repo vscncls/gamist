@@ -28,7 +28,7 @@ Vagrant.configure("2") do |config|
       cd /vagrant/backend
       pnpm i
       node migrate up
-      pnpx ts-node src/entrypoints/saveGamesToDb.ts
+      pnpm run save-games
       pnpm run server:dev &
 
       # frontend

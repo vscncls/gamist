@@ -9,7 +9,8 @@
     "test:e2e": "node migrate down --to 0 && node migrate up && jest -c ./jest.e2e.config.js",
     "lint": "eslint src/ && prettier -c src/",
     "server:dev": "ts-node-dev --respawn src/entrypoints/restApi.ts | ./node_modules/.bin/pino-pretty",
-    "server:run": "node ./dist/src/entrypoints/restApi.js"
+    "server:run": "node ./dist/src/entrypoints/restApi.js",
+    "save-games": "ts-node src/entrypoints/saveGamesToDb.ts | ./node_modules/.bin/pino-pretty"
   },
   "repository": {
     "type": "git",
