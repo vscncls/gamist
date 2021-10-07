@@ -10,8 +10,7 @@ pipeline {
             steps {
                 nodejs(nodeJSInstallationName: '14') {
                     sh '''
-                    rm -rf gamist || true
-                    git clone https://github.com/vscncls/gamist
+                        npm install -g pnpm
                     '''
                 }
             }
@@ -21,7 +20,7 @@ pipeline {
             steps {
                 nodejs(nodeJSInstallationName: '14') {
                     sh '''
-                        cd gamist/backend
+                        cd backend
                         pnpm i
                         pnpm test:unit
 
@@ -40,7 +39,7 @@ pipeline {
             steps {
                 nodejs(nodeJSInstallationName: '14') {
                     sh '''
-                        cd gamist/backend
+                        cd backend
                         pnpm install
                         pnpx tsc
                     '''
@@ -52,7 +51,7 @@ pipeline {
             steps {
                 nodejs(nodeJSInstallationName: '14') {
                     sh '''
-                        cd gamist/frontend
+                        cd frontend
                         pnpm install
                         pnpm run build
                     '''
