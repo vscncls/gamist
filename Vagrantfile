@@ -6,6 +6,7 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 8080, host: 8080, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 5432, host: 5432, host_ip: "127.0.0.1"
   config.vm.network "forwarded_port", guest: 3000, host: 3000, host_ip: "127.0.0.1"
+  config.vm.synced_folder "./", "/vagrant", type: "rsync", rsync__args: ["--verbose", "--archive", "--delete", "-z"]
 
   config.vm.provision "docker" do |docker|
     docker.run "postgres:13.3",
