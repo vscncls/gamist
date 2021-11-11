@@ -1,4 +1,4 @@
-import { RegisterUserCommand } from "../RegisterUserCommand";
+import { EmailAlreadyExists, RegisterUserCommand, UsernameAlreadyExists } from "../RegisterUserCommand";
 import { FakeUserProvider } from "./FakeUserProvider";
 
 describe("Register user", () => {
@@ -30,7 +30,6 @@ describe("Register user", () => {
       password: "teste",
     });
 
-    // TODO: assert especific error
     await expect(
       command.execute({
         id: "e6884def-1ee6-4581-a471-428da2afd670",
@@ -38,6 +37,27 @@ describe("Register user", () => {
         username: "vscncls2",
         password: "teste",
       })
-    ).rejects.toThrow();
+    ).rejects.toThrow(EmailAlreadyExists);
+  });
+
+  it("throws if user already registered", async () => {
+    const userProvider = new FakeUserProvider();
+    const command = new RegisterUserCommand(userProvider);
+
+    await command.execute({
+      id: "f8a3e94f-4e2e-4ff7-aaa0-8045814d8231",
+      email: "lucas+1@vscncls.xyz",
+      username: "vscncls",
+      password: "teste",
+    });
+
+    await expect(
+      command.execute({
+        id: "e6884def-1ee6-4581-a471-428da2afd670",
+        email: "lucas+2@vscncls.xyz",
+        username: "vscncls",
+        password: "teste",
+      })
+    ).rejects.toThrow(UsernameAlreadyExists);
   });
 });

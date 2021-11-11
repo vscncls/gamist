@@ -1,5 +1,5 @@
 import { version as uuidVersion, validate as uuidValidate } from "uuid";
-import { GetUserSessionTokenQuery } from "../GetUserSessionTokenQuery";
+import { GetUserSessionTokenQuery, PasswordDoesntMatch, UserNotFound } from "../GetUserSessionTokenQuery";
 import { SessionToken } from "../SessionToken";
 import { SessionTokenProvider } from "../SessionTokenProvider";
 import { User } from "../User";
@@ -47,10 +47,9 @@ describe("Get user session token", () => {
     const userProvider = new FakeUserProvider();
     const getUserSessionTokenQuery = new GetUserSessionTokenQuery(userProvider, new FakeSessionTokenProvider());
 
-    // TODO: assert especific error
     await expect(
       async () => await getUserSessionTokenQuery.execute({ email: "lucas@vscncls.xyz", password: "senha123" })
-    ).rejects.toThrow(/user not found/);
+    ).rejects.toThrow(UserNotFound);
   });
 
   it("throws on wrong password", async () => {
@@ -64,9 +63,8 @@ describe("Get user session token", () => {
     );
     await userProvider.createNewUser(user);
 
-    // TODO: assert especific error
     await expect(
       async () => await getUserSessionTokenQuery.execute({ email: "lucas@vscncls.xyz", password: "senha errada" })
-    ).rejects.toThrow(/wrong password/);
+    ).rejects.toThrow(PasswordDoesntMatch);
   });
 });

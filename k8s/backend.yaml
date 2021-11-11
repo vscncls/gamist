@@ -1,0 +1,158 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: gamist
+  labels:
+    app: gamist
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gamist-backend
+  namespace: gamist
+data:
+  env: prd
+
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: gamist-backend
+  namespace: gamist
+type: Opaque
+data:
+  POSTGRES_URI: cG9zdGdyZXM6Ly91c2VybmFtZTpwYXNzd29yZEBnYW1pc3QtZGItc3ZjLmdhbWlzdDo1NDMyL2RiCg==
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gamist-backend
+  namespace: gamist
+  labels:
+    app: gamist-backend
+spec:
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  replicas: 2
+  selector:
+    matchLabels:
+      app: gamist-backend
+  template:
+    metadata:
+      namespace: gamist
+      labels:
+        app: gamist-backend
+    spec:
+      containers:
+        - name: gamist-backend
+          image: vscncls/gamist-backend:latest
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: gamist-backend
+            - secretRef:
+                name: gamist-backend
+          ports:
+            - containerPort: 8080
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 120
+            successThreshold: 1
+            failureThreshold: 6
+          resources:
+            limits:
+              cpu: 300m
+              memory: 500Mi
+            requests:
+              cpu: 300m
+              memory: 500Mi
+---
+apiVersion: autoscaling/v2beta2
+kind: HorizontalPodAutoscaler
+metadata:
+  namespace: gamist
+  name: gamist-backend-hpa
+  labels:
+    app: gamist-backend
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: gamist-backend
+  minReplicas: 2
+  maxReplicas: 5
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 90
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 90
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: gamist
+  name: gamist-backend-svc
+  labels:
+    app: gamist-backend
+spec:
+  selector:
+    app: gamist-backend
+  ports:
+    - port: 80
+      targetPort: 8080
+  type: ClusterIP
+
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gamist-backend-ingress
+  namespace: gamist
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/backend-protocol: HTTP
+    nginx.ingress.kubernetes.io/load-balance: ewma
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "60"
+    nginx.ingress.kubernetes.io/proxy-body-size: 1m
+    nginx.ingress.kubernetes.io/proxy-buffer-size: 8k
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+  rules:
+    - host: gamist.local
+      http:
+        paths:
+          - path: /api(/|$)(.*)
+            pathType: Prefix
+            backend:
+              service:
+                name: gamist-backend-svc
+                port:
+                  number: 80

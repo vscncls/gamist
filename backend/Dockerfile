@@ -12,7 +12,7 @@ COPY --chown=app:app pnpm-lock.yaml /app
 
 USER app:app
 
-RUN pnpm ci
+RUN pnpm i
 
 COPY --chown=app:app . /app
 

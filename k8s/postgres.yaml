@@ -1,0 +1,100 @@
+kind: Namespace
+apiVersion: v1
+metadata:
+  name: gamist
+  labels:
+    app: gamist
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: gamist-db
+  namespace: gamist
+data:
+  env: prd
+  POSTGRES_USER: username
+  POSTGRES_PASSWORD: password
+  POSTGRES_DB: db
+
+---
+kind: Secret
+apiVersion: v1
+metadata:
+  name: gamist-db
+  namespace: gamist
+type: Opaque
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gamist-db
+  namespace: gamist
+  labels:
+    app: gamist-db
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gamist-db
+  template:
+    metadata:
+      namespace: gamist
+      labels:
+        app: gamist-db
+    spec:
+      containers:
+        - name: gamist-db
+          image: postgres:13.3
+          envFrom:
+            - configMapRef:
+                name: gamist-db
+            - secretRef:
+                name: gamist-db
+          ports:
+            - containerPort: 5432
+          livenessProbe:
+            exec:
+              command:
+                - pidof
+                - postgres
+            initialDelaySeconds: 120
+            periodSeconds: 20
+            timeoutSeconds: 5
+            successThreshold: 1
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - pidof
+                - postgres
+            initialDelaySeconds: 30
+            periodSeconds: 30
+            timeoutSeconds: 120
+            successThreshold: 1
+            failureThreshold: 6
+          resources:
+            limits:
+              cpu: 300m
+              memory: 500Mi
+            requests:
+              cpu: 300m
+              memory: 500Mi
+---
+kind: Service
+apiVersion: v1
+metadata:
+  namespace: gamist
+  name: gamist-db-svc
+  labels:
+    app: gamist-db
+spec:
+  selector:
+    app: gamist-db
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP

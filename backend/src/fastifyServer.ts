@@ -142,4 +142,8 @@ server.put<SetGameStatus>("/game-list/:gameId", { schema: { body: { $ref: "addGa
   res.code(202).send("");
 });
 
+server.get("/health", (_req, res) => {
+  res.code(200).send("");
+});
+
 export { server as fastifyServer };
