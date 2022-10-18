@@ -1,0 +1,86 @@
+Arguments: 
+  /home/lucas/.asdf/installs/nodejs/16.17.1/bin/node /usr/bin/yarn global bin
+
+PATH: 
+  /home/lucas/.asdf/plugins/nodejs/shims:/home/lucas/.asdf/installs/nodejs/lts/bin:/home/lucas/.asdf/shims:/home/lucas/.asdf/bin:/home/lucas/.emacs.d/bin:/home/lucas/.config/yarn/global/node_modules/.bin:/home/lucas/.yarn/bin:/home/lucas/.emacs.d/bin:/home/lucas/.config/yarn/global/node_modules/.bin:/home/lucas/.yarn/bin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  16.17.1
+
+Platform: 
+  linux x64
+
+Trace: 
+  SyntaxError: /home/lucas/Documents/gamist/backend/package.json: Unexpected string in JSON at position 1200
+      at JSON.parse (<anonymous>)
+      at /usr/lib/node_modules/yarn/lib/cli.js:1629:59
+      at Generator.next (<anonymous>)
+      at step (/usr/lib/node_modules/yarn/lib/cli.js:310:30)
+      at /usr/lib/node_modules/yarn/lib/cli.js:321:13
+
+npm manifest: 
+  {
+    "name": "gamist",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+      "test:unit": "jest -c ./jest.unit.config.js",
+      "test:integration": "node migrate down --to 0 && node migrate up && jest -c ./jest.integration.config.js",
+      "test:e2e": "node migrate down --to 0 && node migrate up && jest -c ./jest.e2e.config.js",
+      "lint": "eslint src/ && prettier -c src/",
+      "server:dev": "ts-node-dev --respawn src/entrypoints/restApi.ts | ./node_modules/.bin/pino-pretty",
+      "server:run": "node ./dist/src/entrypoints/restApi.js",
+      "save-games": "ts-node src/entrypoints/saveGamesToDb.ts | ./node_modules/.bin/pino-pretty"
+    },
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/vscncls/typescript-backend-template.git"
+    },
+    "author": "",
+    "license": "BSD-2-Clause",
+    "bugs": {
+      "url": "https://github.com/vscncls/typescript-backend-template/issues"
+    },
+    "homepage": "https://github.com/vscncls/typescript-backend-template#readme",
+    "dependencies": {
+      "axios": "^0.21.4",
+      "bcrypt": "^5.1.0",
+      "dotenv": "^10.0.0",
+      "fastify": "^3.29.3",
+      "fastify-cors": "^6.1.0",
+      "pino": "^7.11.0",
+      "uuid": "^8.3.2"
+      "slonik": "29"
+    },
+    "devDependencies": {
+      "@slonik/migrator": "^0.11.3",
+      "@types/bcrypt": "^5.0.0",
+      "@types/jest": "^27.5.2",
+      "@types/node": "^16.11.65",
+      "@types/pg": "^8.6.5",
+      "@types/pino": "^6.3.12",
+      "@types/uuid": "^8.3.4",
+      "@typescript-eslint/eslint-plugin": "^4.33.0",
+      "@typescript-eslint/parser": "^4.33.0",
+      "eslint": "^7.32.0",
+      "eslint-config-prettier": "^8.5.0",
+      "eslint-plugin-prettier": "^4.2.1",
+      "jest": "^27.5.1",
+      "pino-pretty": "^7.6.1",
+      "prettier": "^2.7.1",
+      "ts-jest": "^27.1.5",
+      "ts-node": "^10.9.1",
+      "ts-node-dev": "^1.1.8",
+      "typescript": "^4.8.4"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
